@@ -1,6 +1,0 @@
-[core]
-	repositoryformatversion = 0
-	filemode = true
-	bare = true
-[remote "origin"]
-	url = git@vogsphere.42lehavre.fr:vogsphere/intra-uuid-5e11e793-958c-4fb0-b666-379448d0356d-7774885-mtoudic
