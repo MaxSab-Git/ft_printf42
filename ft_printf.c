@@ -6,7 +6,7 @@
 /*   By: mtoudic <mtoudic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 11:42:05 by mtoudic           #+#    #+#             */
-/*   Updated: 2026/10/24 16:50:18 by mtoudic          ###   ########.fr       */
+/*   Updated: 2026/10/28 12:51:28 by mtoudic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,35 +41,13 @@ static int	putnbr(int n, int fd, const char *base)
 	return (11 - i);
 }
 
-static int	putunbr(unsigned int n, int fd, const char *base)
-{
-	char	nstr[11];
-	size_t	i;
-	size_t	base_len;
-
-	i = 10;
-	base_len = ft_strlen(base);
-	while (1)
-	{
-		nstr[i--] = base[n % base_len];
-		n /= base_len;
-		if (n == 0)
-			break ;
-	}
-	i++;
-	write(fd, nstr + i, 11 - i);
-	return (11 - i);
-}
-
-static int	putptr(unsigned int ptr, int fd, const char *base)
+static int	putunbr(unsigned int n, int fd, const char *base, int isptr)
 {
 	char			nstr[13];
 	size_t			i;
 	size_t			base_len;
-	unsigned int	n;
 
 	i = 12;
-	n = ((size_t)ptr);
 	base_len = ft_strlen(base);
 	while (1)
 	{
@@ -78,35 +56,40 @@ static int	putptr(unsigned int ptr, int fd, const char *base)
 		if (n == 0)
 			break ;
 	}
-	nstr[i--] = 'x';
-	nstr[i] = '0';
+	if (isptr)
+	{
+		nstr[i--] = 'x';
+		nstr[i] = '0';
+	}
+	else
+		i++;
 	write(fd, nstr + i, 13 - i);
 	return (13 - i);
 }
 
-static int	cast_token(char c, va_list *args, int *writen)
+static int	cast_token(char c, va_list *args, int *wr)
 {
 	const char	*str;
 
-	if (c == 'c' && ++(*writen))
+	if (c == 'c' && ++(*wr))
 		ft_putchar_fd((char)va_arg(*args, int), STDOUT_FILENO);
 	else if (c == 's')
 	{
 		str = va_arg(*args, const char *);
 		ft_putstr_fd((char *)str, STDOUT_FILENO);
-		*writen += ft_strlen(str);
+		*wr += ft_strlen(str);
 	}
 	else if (c == 'p')
-		*writen += putptr(va_arg(*args, unsigned int), 1, "0123456789abcdef");
+		*wr += putunbr(va_arg(*args, unsigned int), 1, "0123456789abcdef", 1);
 	else if (c == 'd' || c == 'i')
-		*writen += putnbr(va_arg(*args, int), 1, "0123456789");
+		*wr += putnbr(va_arg(*args, int), 1, "0123456789");
 	else if (c == 'u')
-		*writen += putunbr(va_arg(*args, unsigned int), 1, "0123456789");
+		*wr += putunbr(va_arg(*args, unsigned int), 1, "0123456789", 0);
 	else if (c == 'x')
-		*writen += putunbr(va_arg(*args, unsigned int), 1, "0123456789abcdef");
+		*wr += putunbr(va_arg(*args, unsigned int), 1, "0123456789abcdef", 0);
 	else if (c == 'X')
-		*writen += putunbr(va_arg(*args, unsigned int), 1, "0123456789ABCDEF");
-	else if (c == '%' && ++(*writen))
+		*wr += putunbr(va_arg(*args, unsigned int), 1, "0123456789ABCDEF", 0);
+	else if (c == '%' && ++(*wr))
 		ft_putchar_fd('%', STDOUT_FILENO);
 	else
 		return (0);
