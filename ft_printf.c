@@ -6,7 +6,7 @@
 /*   By: mtoudic <mtoudic@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 11:42:05 by mtoudic           #+#    #+#             */
-/*   Updated: 2026/10/28 12:51:28 by mtoudic          ###   ########.fr       */
+/*   Updated: 2026/10/28 15:52:05 by mtoudic          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ static int	putunbr(unsigned int n, int fd, const char *base, int isptr)
 	size_t			i;
 	size_t			base_len;
 
+	if (isptr && n == 0)
+	{
+		write(fd, "(nil)", 5);
+		return (5);
+	}
 	i = 12;
 	base_len = ft_strlen(base);
 	while (1)
@@ -56,13 +61,11 @@ static int	putunbr(unsigned int n, int fd, const char *base, int isptr)
 		if (n == 0)
 			break ;
 	}
-	if (isptr)
+	if (++i && isptr)
 	{
-		nstr[i--] = 'x';
-		nstr[i] = '0';
+		nstr[--i] = 'x';
+		nstr[--i] = '0';
 	}
-	else
-		i++;
 	write(fd, nstr + i, 13 - i);
 	return (13 - i);
 }

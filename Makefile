@@ -1,8 +1,8 @@
 NAME=libftprintf.a
 LIBFT=./libft/libft.a
 COMPILER=cc
-FLAGS=-Wall -Wextra -Werror -g3
-SOURCES=ft_printf.c
+FLAGS=-Wall -Wextra -Werror
+SOURCES=ft_printf.c ./libft/ft_putchar_fd.o ./libft/ft_putstr_fd.o ./libft/ft_strlen.o
 
 TESTSOURCES=main.c
 
@@ -17,7 +17,7 @@ $(NAME): $(OBJS)
 	ar -rc $@ $(OBJS)
 
 $(OBJS):%.o:%.c
-	$(COMPILER) $(FLAGS) -c $< -o $@ -I./libft
+	$(COMPILER) $(FLAGS) -c $< -o $@ -I./libft 
 
 .PHONY: all clean fclean re test
 
@@ -33,5 +33,5 @@ re: fclean all
 
 test: all
 	norminette --use-gitignore
-	$(COMPILER) $(FLAGS) $(TESTSOURCES) -I./libft -I./ -L./libft -L./ -lftprintf -lft -lbsd
+	$(COMPILER) $(FLAGS) $(TESTSOURCES) -L. -lftprintf -lbsd
 	./a.out
