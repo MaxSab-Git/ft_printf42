@@ -18,6 +18,6 @@ References for 'ft_printf' are taken from the [printf(3) linux man pages documan
 
 <h1>Design choices</h1>
 
-The original 'printf' probably use a static malloc'd memory to buffer the output, persisting between calls, before sending it to the console, allowing a reduction of syscalls. Unfortunaly, to safely free this memory, you must (probably) use 'atexit' or equivalent, forbidden in the context of this projet.<br>
+The original 'printf' probably use a global malloc'd memory (stdout) to buffer the output, persisting between calls, before sending it to the console, allowing a reduction of syscalls. Unfortunaly, to safely free this memory, you must (probably) use 'atexit' or equivalent, forbidden in the context of this projet.<br>
 Thus, to remedy this and make the code easier to write, I use an algorithm who's goal is to send a chunk of 'char' before a format specifier, convert the format specifier, send it, and repeat, without allocating any memory whatsoever.<br>
 It's not the pretiest but it avoid having to manage buffer overflow and malloc errors, making the code less error prone.<br>
