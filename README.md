@@ -9,8 +9,8 @@ It only supports %cspdiuxX.<br>
 <h1>Instructions</h1>
 
 To compile, launch 'make' in your terminal and then 'make clean' to remove all *.o files, This should compile fine on most POSIX compliant systems.<br>
-To use it, include 'ft_printf.h' in your *.c file and add '-lftprintf -lft' in your compiler options.<br>
-Mind that 'ft_printf' depends on 'libft' and can't be used without it.<br>
+To use it, include 'ft_printf.h' in your *.c file and add '-lftprintf' in your compiler options.<br>
+Mind that 'ft_printf' depends on 'libft' and can't be compiled without it.<br>
 
 <h1>Resources</h1>
 
